@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevHub - Learn & Code</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      text-align: center;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      color: white;
+      margin-top: 30px;
+    }
+    h1 {
+      font-size: 36px;
+      color: #fca311;
+    }
+    .slogan {
+      font-size: 18px;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .languages {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .lang-box {
+      background: #0f3460;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .lang-box:hover {
+      background: #fca311;
+      color: black;
+    }
+    .buttons {
+      margin: 20px;
+    }
+    .buttons button {
+      background: #fca311;
+      color: black;
+      border: none;
+      padding: 12px 25px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin: 10px;
+    }
+    .buttons button:hover {
+      background: #ffbd69;
+    }
+    .hidden {
+      display: none;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 16px;
+      font-family: monospace;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    pre {
+      text-align: left;
+      background: #222;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+    iframe {
+      width: 100%;
+      height: 315px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="landing">
+  <h1>Welcome to DevHub</h1>
+  <p class="slogan">Where Beginners Learn & Code with Ease!</p>
+
+  <div class="languages">
+    <div class="lang-box" data-url="https://www.java.com/">Java</div>
+    <div class="lang-box" data-url="https://www.python.org/">Python</div>
+    <div class="lang-box" data-url="https://cplusplus.com/">C++</div>
+    <div class="lang-box" data-url="https://en.cppreference.com/w/c">C</div>
+    <div class="lang-box" data-url="https://learn.microsoft.com/en-us/dotnet/csharp/">C#</div>
+    <div class="lang-box" data-url="https://www.php.net/">PHP</div>
+    <div class="lang-box" data-url="https://www.ruby-lang.org/">Ruby</div>
+    <div class="lang-box" data-url="https://developer.apple.com/swift/">Swift</div>
+    <div class="lang-box" data-url="https://www.perl.org/">Perl</div>
+    <div class="lang-box" data-url="https://scikit-learn.org/stable/">ML Programming</div>
+  </div>
+
+  <div class="buttons">
+    <button onclick="showTab('code')">Start Coding</button>
+    <button onclick="showTab('learn')">Start Learning</button>
+  </div>
+</div>
+
+<div class="container hidden" id="code-tab">
+  <h2>Online Code Compiler</h2>
+  <label for="language">Select Language:</label>
+  <select id="language">
+    <option value="" disabled selected>Select Language</option>
+    <option value="python">Python</option>
+    <option value="java">Java</option>
+    <option value="cpp">C++</option>
+    <option value="c">C</option>
+    <option value="csharp">C#</option>
+    <option value="php">PHP</option>
+    <option value="ruby">Ruby</option>
+    <option value="swift">Swift</option>
+    <option value="perl">Perl</option>
+    <option value="ml">ML Programming</option>
+  </select>
+  <br>
+  <textarea id="code" placeholder="Write your code here..."></textarea>
+  <br>
+  <button onclick="runCode()">Run</button>
+  <button onclick="goHome()" style="margin-top:10px;">⬅ Back to Home</button>
+
+  <h3>Output:</h3>
+  <pre id="output"></pre>
+</div>
+
+<div class="container hidden" id="learn-tab">
+  <h2>Learn Programming</h2>
+  <label for="learn-language">Select Language:</label>
+  <select id="learn-language" onchange="showCourse()">
+    <option value="" disabled selected>Select Language</option>
+    <option value="python">Python</option>
+    <option value="java">Java</option>
+    <option value="cpp">C++</option>
+    <option value="c">C</option>
+    <option value="csharp">C#</option>
+    <option value="php">PHP</option>
+    <option value="ruby">Ruby</option>
+    <option value="swift">Swift</option>
+    <option value="perl">Perl</option>
+    <option value="ml">ML Programming</option>
+  </select>
+  <div id="course-content">
+    <p>Select a language to see learning resources.</p>
+  </div>
+  <iframe id="youtube-video" src="" allowfullscreen class="hidden"></iframe>
+  <button onclick="goHome()" style="margin-top:10px;">⬅ Back to Home</button>
+</div>
+
+<script>
+  function showTab(tab) {
+    document.getElementById("landing").classList.add("hidden");
+
+    if (tab === "code") {
+      document.getElementById("code-tab").classList.remove("hidden");
+      document.getElementById("learn-tab").classList.add("hidden");
+    } else if (tab === "learn") {
+      document.getElementById("code-tab").classList.add("hidden");
+      document.getElementById("learn-tab").classList.remove("hidden");
+    }
+  }
+
+  async function runCode() {
+    const codeBox = document.getElementById("code");
+    const code = codeBox.value;
+    const language = document.getElementById("language").value;
+    const outputElement = document.getElementById("output");
+
+    if (!language) {
+      alert("Please select a language.");
+      return;
+    }
+
+    if (language === "ml" && code.trim() === "") {
+      codeBox.value = `# Example: Simple Linear Regression using scikit-learn
+from sklearn.linear_model import LinearRegression
+X = [[0], [1], [2], [3]]
+y = [0, 1, 2, 3]
+model = LinearRegression().fit(X, y)
+print("Coefficient:", model.coef_)
+print("Intercept:", model.intercept_)`;
+    }
+
+    const languageMap = {
+      python: "python3",
+      java: "java",
+      cpp: "cpp",
+      c: "c",
+      csharp: "csharp",
+      php: "php",
+      ruby: "ruby",
+      swift: "swift",
+      perl: "perl",
+      ml: "python3"
+    };
+
+    outputElement.textContent = "Running...";
+
+    const apiUrl = "https://emkc.org/api/v2/piston/execute";
+
+    const requestData = {
+      language: languageMap[language],
+      version: "*",
+      files: [{ content: codeBox.value }]
+    };
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData)
+      });
+
+      const result = await response.json();
+      outputElement.textContent = result.run.stdout || result.run.stderr || "No output";
+    } catch (error) {
+      outputElement.textContent = "Error: " + error.message;
+    }
+  }
+
+  function showCourse() {
+    const courses = {
+      python: {
+        text: "Learn Python <a href='https://docs.python.org/3/tutorial/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/rfscVS0vtbw"
+      },
+      java: {
+        text: "Learn Java <a href='https://docs.oracle.com/javase/tutorial/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/grEKMHGYyns"
+      },
+      cpp: {
+        text: "Learn C++ <a href='https://cplusplus.com/doc/tutorial/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/vLnPwxZdW4Y"
+      },
+      c: {
+        text: "Learn C <a href='https://www.learn-c.org/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/KJgsSFOSQv0"
+      },
+      csharp: {
+        text: "Learn C# <a href='https://learn.microsoft.com/en-us/dotnet/csharp/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/GhQdlIFylQ8"
+      },
+      php: {
+        text: "Learn PHP <a href='https://www.php.net/manual/en/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/OK_JCtrrv-c"
+      },
+      ruby: {
+        text: "Learn Ruby <a href='https://www.ruby-lang.org/en/documentation/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/t_ispmWmdjY"
+      },
+      swift: {
+        text: "Learn Swift <a href='https://developer.apple.com/swift/resources/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/comQ1-x2a1Q"
+      },
+      perl: {
+        text: "Learn Perl <a href='https://www.perl.org/docs.html' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/s88jfZqKpUM"
+      },
+      ml: {
+        text: "Learn Machine Learning <a href='https://scikit-learn.org/stable/tutorial/' target='_blank'>here</a>.",
+        video: "https://www.youtube.com/embed/GwIo3gDZCVQ"
+      }
+    };
+
+    const selectedLang = document.getElementById("learn-language").value;
+    if (selectedLang in courses) {
+      document.getElementById("course-content").innerHTML = courses[selectedLang].text;
+      document.getElementById("youtube-video").src = courses[selectedLang].video;
+      document.getElementById("youtube-video").classList.remove("hidden");
+    }
+  }
+
+  function goHome() {
+    document.getElementById("code-tab").classList.add("hidden");
+    document.getElementById("learn-tab").classList.add("hidden");
+    document.getElementById("landing").classList.remove("hidden");
+    document.getElementById("youtube-video").src = "";
+    document.getElementById("youtube-video").classList.add("hidden");
+  }
+
+  // Make language boxes open external docs
+  document.querySelectorAll('.lang-box').forEach(box => {
+    box.addEventListener('click', () => {
+      const url = box.getAttribute('data-url');
+      if (url) window.open(url, '_blank');
+    });
+  });
+</script>
+
+</body>
+</html>
